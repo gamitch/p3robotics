@@ -36,12 +36,32 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
 // Contact form
-const form = document.getElementById('contact-form');
+const form = document.getElementById('contact-form') || document.getElementById('contactForm');
+const successMsg = document.getElementById('form-success') || document.getElementById('formSuccess');
 if (form) {
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const success = document.getElementById('form-success');
-    form.style.display = 'none';
-    if (success) success.style.display = 'block';
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: new FormData(form)
+      });
+      const data = await res.json();
+      if (data.success) {
+        form.style.display = 'none';
+        if (successMsg) successMsg.style.display = 'block';
+      } else {
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+        alert('Something went wrong. Please email us directly.');
+      }
+    } catch {
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+      alert('Network error. Please try again.');
+    }
   });
 }

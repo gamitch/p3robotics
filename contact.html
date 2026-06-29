@@ -35,7 +35,10 @@
 <section class="bg-white">
   <div class="container">
     <div class="contact-form-wrap fade-in">
-      <form id="contact-form">
+      <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="e4c93dca-c498-49ed-8147-c08c81edfdf7">
+        <input type="hidden" name="subject" value="New Contact - P3 Robotics FTC #16751">
+        <input type="hidden" name="redirect" value="false">
         <div class="form-group">
           <label for="name">Full Name</label>
           <input type="text" id="name" name="name" placeholder="Your name" required>
